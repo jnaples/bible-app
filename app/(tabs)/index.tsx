@@ -1,98 +1,266 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import Toast from "react-native-toast-message";
+import { useTheme } from "../../contexts/ThemeContext";
+import { supabase } from "../../lib/supabase";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const { width } = Dimensions.get("window");
+
+type Verse = {
+  id: string;
+  reference: string;
+  text: string;
+};
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const { colors } = useTheme();
+  const [verses, setVerses] = useState<Verse[]>([]);
+  const [verseHistory, setVerseHistory] = useState<Verse[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const translateX = useSharedValue(0);
+
+  useEffect(() => {
+    fetchAllVerses();
+  }, []);
+
+  useEffect(() => {
+    if (verseHistory.length > 0) {
+      checkIfSaved();
+    }
+  }, [currentIndex, verseHistory]);
+
+  const fetchAllVerses = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.from("verses").select("*");
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setVerses(data);
+        const randomVerse = data[Math.floor(Math.random() * data.length)];
+        setVerseHistory([randomVerse]);
+      }
+    } catch (error) {
+      console.error("Error fetching verses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkIfSaved = async () => {
+    try {
+      const currentVerse = verseHistory[currentIndex];
+      if (!currentVerse) return;
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("saved_verses")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("verse_id", currentVerse.id)
+        .single();
+
+      setIsSaved(!!data);
+    } catch (error) {
+      setIsSaved(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const currentVerse = verseHistory[currentIndex];
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      if (isSaved) {
+        await supabase
+          .from("saved_verses")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("verse_id", currentVerse.id);
+
+        setIsSaved(false);
+        Toast.show({
+          type: "success",
+          text1: "Verse removed from saved",
+          position: "top",
+          topOffset: 60,
+        });
+      } else {
+        await supabase
+          .from("saved_verses")
+          .insert({ user_id: user.id, verse_id: currentVerse.id });
+
+        setIsSaved(true);
+        Toast.show({
+          type: "success",
+          text1: "Verse saved to collection",
+          position: "top",
+          topOffset: 60,
+        });
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message,
+        position: "top",
+        topOffset: 60,
+      });
+    }
+  };
+
+  const getNextVerse = () => {
+    if (verses.length === 0) return;
+    const randomVerse = verses[Math.floor(Math.random() * verses.length)];
+    setVerseHistory([...verseHistory, randomVerse]);
+    setCurrentIndex(currentIndex + 1);
+  };
+
+  const getPreviousVerse = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const panGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd((event) => {
+      if (event.translationX < -100) {
+        translateX.value = withSpring(0);
+        runOnJS(getNextVerse)();
+      } else if (event.translationX > 100 && currentIndex > 0) {
+        translateX.value = withSpring(0);
+        runOnJS(getPreviousVerse)();
+      } else {
+        translateX.value = withSpring(0);
+      }
+    });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.accent} />
+      </View>
+    );
+  }
+
+  if (verseHistory.length === 0) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.errorText, { color: colors.text }]}>
+          No verses found. Add some in Supabase!
+        </Text>
+      </View>
+    );
+  }
+
+  const currentVerse = verseHistory[currentIndex];
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View
+          style={[
+            styles.card,
+            animatedStyle,
+            {
+              backgroundColor: colors.cardBackground,
+              borderColor: colors.cardBorder,
+            },
+          ]}
+        >
+          <TouchableOpacity style={styles.heartIcon} onPress={handleSave}>
+            <Ionicons
+              name={isSaved ? "bookmark" : "bookmark-outline"}
+              size={28}
+              color={colors.accent}
+            />
+          </TouchableOpacity>
+
+          <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+          <Text style={[styles.verseText, { color: colors.text }]}>
+            "{currentVerse.text}"
+          </Text>
+          <Text style={[styles.reference, { color: colors.reference }]}>
+            {currentVerse.reference}
+          </Text>
+        </Animated.View>
+      </GestureDetector>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  card: {
+    borderRadius: 20,
+    padding: 40,
+    width: width - 40,
+    alignItems: "center",
+    position: "relative",
+    borderWidth: 1,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  heartIcon: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 10,
+  },
+  divider: {
+    width: 2,
+    height: 40,
+    marginBottom: 30,
+  },
+  verseText: {
+    fontSize: 24,
+    textAlign: "center",
+    fontStyle: "italic",
+    lineHeight: 36,
+    marginBottom: 30,
+  },
+  reference: {
+    fontSize: 14,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+  },
+  errorText: {
+    fontSize: 16,
   },
 });
