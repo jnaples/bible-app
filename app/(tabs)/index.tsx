@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   divider: {
-    width: 2,
+    width: 1,
     height: 40,
     marginBottom: 30,
   },
@@ -254,11 +254,13 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     lineHeight: 36,
     marginBottom: 30,
+    fontFamily: "Newsreader_400Regular_Italic",
   },
   reference: {
     fontSize: 14,
     textTransform: "uppercase",
     letterSpacing: 1,
+    fontFamily: "Inter_500Medium",
   },
   errorText: {
     fontSize: 16,

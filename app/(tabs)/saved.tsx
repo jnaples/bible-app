@@ -195,15 +195,16 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   verseText: {
-    fontSize: 16,
-    fontStyle: "italic",
+    fontSize: 20,
     marginBottom: 8,
-    lineHeight: 24,
+    lineHeight: 28,
+    fontFamily: "Newsreader_500Medium_Italic",
   },
   reference: {
     fontSize: 12,
     textTransform: "uppercase",
     letterSpacing: 1,
+    fontFamily: "Inter_500Medium",
   },
   deleteButton: {
     padding: 8,

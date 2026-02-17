@@ -38,12 +38,15 @@ export default function AuthScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bible App</Text>
+      <Text style={styles.title}>Sacred Armor</Text>
+      <Text style={styles.subtitle}>
+        Bible versuses to renew your mind and relcaim your life.
+      </Text>
 
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor="#999"
+        placeholderTextColor="#666"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -53,7 +56,7 @@ export default function AuthScreen() {
       <TextInput
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#999"
+        placeholderTextColor="#666"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -81,37 +84,50 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#1a1d23",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
+    fontSize: 36,
     textAlign: "center",
-    marginBottom: 40,
+    marginBottom: 8,
+    color: "#E8E6E3",
+    fontFamily: "Newsreader_400Regular",
+  },
+  subtitle: {
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 50,
+    color: "#D4A574",
+    textTransform: "uppercase",
+    letterSpacing: 2,
+    lineHeight: 20,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#2a2d35",
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     marginBottom: 15,
     fontSize: 16,
-    color: "#000000",
+    color: "#E8E6E3",
+    borderWidth: 1,
+    borderColor: "#443A37",
   },
   button: {
-    backgroundColor: "#333",
-    padding: 15,
-    borderRadius: 8,
+    backgroundColor: "#D4A574",
+    padding: 18,
+    borderRadius: 12,
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 20,
   },
   buttonText: {
-    color: "white",
+    color: "#1a1d23",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   toggleText: {
     textAlign: "center",
-    marginTop: 20,
-    color: "#2a2a2a",
+    color: "#666",
+    fontSize: 14,
   },
 });

@@ -52,7 +52,7 @@ export default function TabLayout() {
           title: "Theme",
           tabBarIcon: ({ color, size }) => (
             <Ionicons
-              name={theme === "light" ? "sunny" : "moon"}
+              name={theme === "light" ? "sunny-outline" : "moon-outline"}
               size={size}
               color={color}
             />
@@ -69,7 +69,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="saved"
         options={{
           title: "Saved",
           tabBarIcon: ({ color, size }) => (
