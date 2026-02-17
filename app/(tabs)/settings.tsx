@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
 export default function SettingsScreen() {
-  const { signOut, session } = useAuth();
+  const { signOut, deleteAccount, session } = useAuth();
   const { colors } = useTheme();
   const router = useRouter();
 
@@ -21,6 +21,28 @@ export default function SettingsScreen() {
         },
       },
     ]);
+  };
+
+  const handleDeleteAccount = async () => {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure? This will permanently delete your account and all your saved verses. This cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete Account",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              router.replace("/auth");
+            } catch (error: any) {
+              Alert.alert("Error", error.message);
+            }
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -47,6 +69,13 @@ export default function SettingsScreen() {
       <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
         <Text style={styles.signOutText}>Sign Out</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={handleDeleteAccount}
+      >
+        <Text style={styles.deleteButtonText}>Delete Account</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -61,6 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 30,
+    fontFamily: "Newsreader_600SemiBold",
   },
   section: {
     borderRadius: 15,
@@ -73,20 +103,36 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 1,
+    fontFamily: "Inter_400Regular",
   },
   email: {
     fontSize: 16,
+    fontFamily: "Inter_400Regular",
   },
   signOutButton: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "#D4A574",
     padding: 18,
     borderRadius: 15,
     alignItems: "center",
-    marginTop: 20,
+    marginBottom: 15,
   },
   signOutText: {
-    color: "#ffffff",
+    color: "#1a1d23",
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
+  },
+  deleteButton: {
+    backgroundColor: "transparent",
+    padding: 18,
+    borderRadius: 15,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#e74c3c",
+  },
+  deleteButtonText: {
+    color: "#e74c3c",
+    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
   },
 });
