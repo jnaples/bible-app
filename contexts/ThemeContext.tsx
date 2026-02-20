@@ -34,13 +34,13 @@ const lightColors = {
 };
 
 const darkColors = {
-  background: "#1a1d23",
-  cardBackground: "#2a2d35",
+  background: "#191F2F",
+  cardBackground: "#1D2230",
   cardBorder: "#443A37",
   text: "#E8E6E3",
   reference: "#DE9D36",
   divider: "#D4A574",
-  tabBarBackground: "#1a1d23",
+  tabBarBackground: "#0E1419",
   tabBarActive: "#DE9D36",
   tabBarInactive: "#666",
   accent: "#DE9D36",

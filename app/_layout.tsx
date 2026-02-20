@@ -5,11 +5,12 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import {
+  Newsreader_300Light,
   Newsreader_400Regular,
   Newsreader_400Regular_Italic,
   Newsreader_500Medium,
   Newsreader_500Medium_Italic,
-  Newsreader_600SemiBold,
+  Newsreader_600SemiBold
 } from "@expo-google-fonts/newsreader";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -39,6 +40,7 @@ function AppContent() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
+    Newsreader_300Light,
     Newsreader_400Regular,
     Newsreader_400Regular_Italic,
     Newsreader_500Medium,

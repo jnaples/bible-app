@@ -1,16 +1,11 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function AuthScreen() {
+  const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -54,6 +49,80 @@ export default function AuthScreen() {
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
+  };
+
+  const styles = {
+    container: {
+      flex: 1,
+      justifyContent: "center" as const,
+      padding: 20,
+      backgroundColor: colors.background,
+    },
+    title: {
+      fontSize: 36,
+      textAlign: "center" as const,
+      marginBottom: 8,
+      color: colors.text,
+      fontFamily: "Newsreader_300Light",
+    },
+    subtitle: {
+      fontSize: 14,
+      textAlign: "center" as const,
+      marginBottom: 24,
+      color: colors.accent,
+      textTransform: "uppercase" as const,
+      letterSpacing: 2,
+      fontFamily: "Inter_400Regular",
+      lineHeight: 20,
+    },
+    forgotText: {
+      color: colors.text,
+      textAlign: "center" as const,
+      marginBottom: 20,
+      fontSize: 14,
+      fontFamily: "Inter_400Regular",
+    },
+    input: {
+      backgroundColor: colors.cardBackground,
+      padding: 15,
+      borderRadius: 12,
+      marginBottom: 15,
+      fontSize: 16,
+      color: colors.text,
+      borderWidth: 1,
+      borderColor: colors.cardBorder,
+      fontFamily: "Inter_400Regular",
+    },
+    button: {
+      backgroundColor: colors.accent,
+      padding: 18,
+      borderRadius: 12,
+      alignItems: "center" as const,
+      marginTop: 10,
+      marginBottom: 20,
+    },
+    buttonText: {
+      color: colors.background,
+      fontSize: 16,
+      fontWeight: "700" as const,
+      fontFamily: "Inter_600SemiBold",
+    },
+    forgotPasswordButton: {
+      alignItems: "flex-end" as const,
+      marginBottom: 10,
+      marginTop: -5,
+    },
+    forgotPasswordText: {
+      color: colors.accent,
+      fontSize: 14,
+      fontFamily: "Inter_400Regular",
+    },
+    toggleText: {
+      textAlign: "center" as const,
+      color: colors.tabBarInactive,
+      fontSize: 14,
+      fontFamily: "Inter_400Regular",
+    },
   };
 
   return (
@@ -135,77 +204,3 @@ export default function AuthScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#1a1d23",
-  },
-  title: {
-    fontSize: 36,
-    textAlign: "center",
-    marginBottom: 8,
-    color: "#E8E6E3",
-    fontFamily: "Newsreader_600SemiBold",
-  },
-  subtitle: {
-    fontSize: 14,
-    textAlign: "center",
-    marginBottom: 50,
-    color: "#D4A574",
-    textTransform: "uppercase",
-    letterSpacing: 2,
-    fontFamily: "Inter_400Regular",
-    lineHeight: 20,
-  },
-  forgotText: {
-    color: "#E8E6E3",
-    textAlign: "center",
-    marginBottom: 20,
-    fontSize: 14,
-    fontFamily: "Inter_400Regular",
-  },
-  input: {
-    backgroundColor: "#2a2d35",
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 15,
-    fontSize: 16,
-    color: "#E8E6E3",
-    borderWidth: 1,
-    borderColor: "#443A37",
-    fontFamily: "Inter_400Regular",
-  },
-  button: {
-    backgroundColor: "#D4A574",
-    padding: 18,
-    borderRadius: 12,
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "#1a1d23",
-    fontSize: 16,
-    fontWeight: "700",
-    fontFamily: "Inter_600SemiBold",
-  },
-  forgotPasswordButton: {
-    alignItems: "flex-end",
-    marginBottom: 10,
-    marginTop: -5,
-  },
-  forgotPasswordText: {
-    color: "#D4A574",
-    fontSize: 14,
-    fontFamily: "Inter_400Regular",
-  },
-  toggleText: {
-    textAlign: "center",
-    color: "#666",
-    fontSize: 14,
-    fontFamily: "Inter_400Regular",
-  },
-});

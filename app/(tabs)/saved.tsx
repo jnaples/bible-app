@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -28,6 +27,80 @@ export default function SavedScreen() {
   const [savedVerses, setSavedVerses] = useState<SavedVerse[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const styles = {
+    container: {
+      flex: 1,
+      paddingTop: 60,
+      backgroundColor: colors.background,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center" as const,
+      alignItems: "center" as const,
+      backgroundColor: colors.background,
+    },
+    header: {
+      fontSize: 28,
+      fontWeight: "bold" as const,
+      paddingHorizontal: 20,
+      marginBottom: 20,
+      color: colors.text,
+      fontFamily: "Newsreader_300Light",
+    },
+    listContainer: {
+      padding: 20,
+      paddingTop: 0,
+    },
+    verseCard: {
+      borderRadius: 15,
+      padding: 20,
+      marginBottom: 15,
+      flexDirection: "row" as const,
+      alignItems: "center" as const,
+      borderWidth: 1,
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.cardBorder,
+    },
+    verseContent: {
+      flex: 1,
+      marginRight: 15,
+    },
+    verseText: {
+      fontSize: 20,
+      marginBottom: 8,
+      lineHeight: 28,
+      fontFamily: "Newsreader_500Medium_Italic",
+      color: colors.text,
+    },
+    reference: {
+      fontSize: 12,
+      textTransform: "uppercase" as const,
+      letterSpacing: 1,
+      fontFamily: "Inter_500Medium",
+      color: colors.reference,
+    },
+    deleteButton: {
+      padding: 8,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: "center" as const,
+      alignItems: "center" as const,
+      paddingHorizontal: 40,
+    },
+    emptyText: {
+      fontSize: 20,
+      marginTop: 20,
+      marginBottom: 10,
+      color: colors.text,
+    },
+    emptySubtext: {
+      fontSize: 14,
+      textAlign: "center" as const,
+      color: colors.reference,
+    },
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       fetchSavedVerses();
@@ -44,13 +117,7 @@ export default function SavedScreen() {
 
       const { data, error } = await supabase
         .from("saved_verses")
-        .select(
-          `
-          id,
-          verse_id,
-          verse:verses(id, reference, text)
-        `,
-        )
+        .select(`id, verse_id, verse:verses(id, reference, text)`)
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -82,7 +149,6 @@ export default function SavedScreen() {
         .eq("id", savedVerseId);
 
       if (error) throw error;
-
       setSavedVerses(savedVerses.filter((v) => v.id !== savedVerseId));
     } catch (error: any) {
       Alert.alert("Error", error.message);
@@ -90,25 +156,12 @@ export default function SavedScreen() {
   };
 
   const renderVerse = ({ item }: { item: SavedVerse }) => (
-    <View
-      style={[
-        styles.verseCard,
-        {
-          backgroundColor: colors.cardBackground,
-          borderColor: colors.cardBorder,
-        },
-      ]}
-    >
+    <View style={styles.verseCard}>
       <View style={styles.verseContent}>
-        <Text
-          style={[styles.verseText, { color: colors.text }]}
-          numberOfLines={2}
-        >
+        <Text style={styles.verseText} numberOfLines={2}>
           "{item.verse.text}"
         </Text>
-        <Text style={[styles.reference, { color: colors.reference }]}>
-          {item.verse.reference}
-        </Text>
+        <Text style={styles.reference}>{item.verse.reference}</Text>
       </View>
       <TouchableOpacity
         style={styles.deleteButton}
@@ -121,20 +174,15 @@ export default function SavedScreen() {
 
   if (loading) {
     return (
-      <View
-        style={[
-          styles.loadingContainer,
-          { backgroundColor: colors.background },
-        ]}
-      >
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.accent} />
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.header, { color: colors.text }]}>Saved Verses</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Saved Verses</Text>
 
       {savedVerses.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -143,10 +191,8 @@ export default function SavedScreen() {
             size={64}
             color={colors.tabBarInactive}
           />
-          <Text style={[styles.emptyText, { color: colors.text }]}>
-            No saved verses yet
-          </Text>
-          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
+          <Text style={styles.emptyText}>No saved verses yet</Text>
+          <Text style={styles.emptySubtext}>
             Tap the bookmark icon on verses to save them
           </Text>
         </View>
@@ -161,67 +207,3 @@ export default function SavedScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 60,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: "bold",
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  listContainer: {
-    padding: 20,
-    paddingTop: 0,
-  },
-  verseCard: {
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 15,
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-  },
-  verseContent: {
-    flex: 1,
-    marginRight: 15,
-  },
-  verseText: {
-    fontSize: 20,
-    marginBottom: 8,
-    lineHeight: 28,
-    fontFamily: "Newsreader_500Medium_Italic",
-  },
-  reference: {
-    fontSize: 12,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    fontFamily: "Inter_500Medium",
-  },
-  deleteButton: {
-    padding: 8,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 40,
-  },
-  emptyText: {
-    fontSize: 20,
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    textAlign: "center",
-  },
-});
