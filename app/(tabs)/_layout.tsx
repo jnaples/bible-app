@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs, useRouter, useSegments } from "expo-router";
 import React, { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
@@ -32,10 +33,29 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.tabBarBackground,
+          paddingTop: 6,
           borderTopColor: colors.cardBorder,
         },
         tabBarActiveTintColor: colors.tabBarActive,
         tabBarInactiveTintColor: colors.tabBarInactive,
+        tabBarLabelStyle: {
+          marginTop: 4,
+          fontSize: 12,
+        },
+        tabBarButton: (props) => (
+          <TouchableOpacity
+            {...props}
+            style={[
+              props.style,
+              {
+                borderTopWidth: 2,
+                borderTopColor: props.accessibilityState?.selected
+                  ? colors.accent
+                  : "transparent",
+              },
+            ]}
+          />
+        ),
       }}
       screenListeners={{
         tabPress: (e) => {
@@ -78,9 +98,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="account"
         options={{
-          title: "Settings",
+          title: "Account",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),

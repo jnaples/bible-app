@@ -38,12 +38,12 @@ const darkColors = {
   cardBackground: "#2a2d35",
   cardBorder: "#443A37",
   text: "#E8E6E3",
-  reference: "#D4A574",
+  reference: "#DE9D36",
   divider: "#D4A574",
   tabBarBackground: "#1a1d23",
-  tabBarActive: "#D4A574",
+  tabBarActive: "#DE9D36",
   tabBarInactive: "#666",
-  accent: "#D4A574",
+  accent: "#DE9D36",
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

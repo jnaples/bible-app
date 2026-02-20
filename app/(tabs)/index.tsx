@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -209,7 +210,10 @@ export default function HomeScreen() {
             />
           </TouchableOpacity>
 
-          <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+          <LinearGradient
+            colors={["transparent", colors.accent, "transparent"]}
+            style={styles.divider}
+          />
           <Text style={[styles.verseText, { color: colors.text }]}>
             "{currentVerse.text}"
           </Text>
@@ -236,6 +240,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
   },
   heartIcon: {
     position: "absolute",
@@ -244,16 +253,16 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   divider: {
-    width: 1,
+    width: 2,
     height: 40,
-    marginBottom: 30,
+    marginBottom: 24,
   },
   verseText: {
     fontSize: 24,
     textAlign: "center",
     fontStyle: "italic",
-    lineHeight: 36,
-    marginBottom: 30,
+    lineHeight: 32,
+    marginBottom: 24,
     fontFamily: "Newsreader_400Regular_Italic",
   },
   reference: {

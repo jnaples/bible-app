@@ -4,7 +4,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
-export default function SettingsScreen() {
+export default function AcccountScreen() {
   const { signOut, deleteAccount, session } = useAuth();
   const { colors } = useTheme();
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function SettingsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.header, { color: colors.text }]}>Settings</Text>
+      <Text style={[styles.header, { color: colors.text }]}>Account</Text>
 
       <View
         style={[

@@ -9,6 +9,7 @@ type AuthContextType = {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -82,9 +83,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
   };
 
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "sacredarmor://reset-password",
+    });
+    if (error) throw error;
+  };
+
   return (
     <AuthContext.Provider
-      value={{ session, loading, signUp, signIn, signOut, deleteAccount }}
+      value={{
+        session,
+        loading,
+        signUp,
+        signIn,
+        signOut,
+        deleteAccount,
+        resetPassword,
+      }}
     >
       {children}
     </AuthContext.Provider>
