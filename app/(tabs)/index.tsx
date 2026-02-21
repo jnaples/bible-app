@@ -110,11 +110,14 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       const { data, error } = await supabase.from("verses").select("*");
+
       if (error) throw error;
+
       if (data && data.length > 0) {
-        setVerses(data);
-        const randomVerse = data[Math.floor(Math.random() * data.length)];
-        setVerseHistory([randomVerse]);
+        // Shuffle the verses array
+        const shuffled = [...data].sort(() => Math.random() - 0.5);
+        setVerses(shuffled);
+        setVerseHistory([shuffled[0]]);
       }
     } catch (error) {
       console.error("Error fetching verses:", error);
@@ -189,9 +192,21 @@ export default function HomeScreen() {
 
   const getNextVerse = () => {
     if (verses.length === 0) return;
-    const randomVerse = verses[Math.floor(Math.random() * verses.length)];
-    setVerseHistory((prev) => [...prev, randomVerse]);
-    setCurrentIndex((prev) => prev + 1);
+
+    // Get the next verse in the shuffled order
+    const nextIndex = verseHistory.length;
+
+    // If we've seen all verses, reshuffle and start over
+    if (nextIndex >= verses.length) {
+      const reshuffled = [...verses].sort(() => Math.random() - 0.5);
+      setVerses(reshuffled);
+      setVerseHistory([reshuffled[0]]);
+      setCurrentIndex(0);
+    } else {
+      // Get next verse in order
+      setVerseHistory([...verseHistory, verses[nextIndex]]);
+      setCurrentIndex(currentIndex + 1);
+    }
   };
 
   const getPreviousVerse = () => {
