@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
-  ImageBackground,
+  StyleSheet,
   Text,
   TouchableOpacity,
 } from "react-native";
@@ -16,6 +16,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import Toast from "react-native-toast-message";
+import BackgroundWrapper from "../../components/BackgroundWrapper";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
 
@@ -27,11 +28,8 @@ type Verse = {
   text: string;
 };
 
-const bgDark = require("../../assets/images/bg-dark.png");
-const bgLight = require("../../assets/images/bg-light.png");
-
 export default function HomeScreen() {
-  const { colors, theme } = useTheme();
+  const { colors } = useTheme();
   const [verses, setVerses] = useState<Verse[]>([]);
   const [verseHistory, setVerseHistory] = useState<Verse[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,62 +37,6 @@ export default function HomeScreen() {
   const [isSaved, setIsSaved] = useState(false);
 
   const translateX = useSharedValue(0);
-  const backgroundImage = theme === "light" ? bgLight : bgDark;
-
-  const styles = {
-    container: {
-      flex: 1,
-      justifyContent: "center" as const,
-      alignItems: "center" as const,
-      padding: 20,
-    },
-    card: {
-      borderRadius: 20,
-      padding: 40,
-      width: width - 40,
-      alignItems: "center" as const,
-      position: "relative" as const,
-      borderWidth: 1,
-      backgroundColor: colors.cardBackground,
-      borderColor: colors.cardBorder,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.4,
-      shadowRadius: 12,
-      elevation: 8,
-    },
-    heartIcon: {
-      position: "absolute" as const,
-      top: 20,
-      right: 20,
-      zIndex: 10,
-    },
-    divider: {
-      width: 2,
-      height: 40,
-      marginBottom: 24,
-    },
-    verseText: {
-      fontSize: 24,
-      textAlign: "center" as const,
-      fontStyle: "italic" as const,
-      lineHeight: 32,
-      marginBottom: 24,
-      fontFamily: "Newsreader_400Regular_Italic",
-      color: colors.text,
-    },
-    reference: {
-      fontSize: 14,
-      textTransform: "uppercase" as const,
-      letterSpacing: 1,
-      fontFamily: "Inter_500Medium",
-      color: colors.reference,
-    },
-    errorText: {
-      fontSize: 16,
-      color: colors.text,
-    },
-  };
 
   useEffect(() => {
     fetchAllVerses();
@@ -114,7 +56,6 @@ export default function HomeScreen() {
       if (error) throw error;
 
       if (data && data.length > 0) {
-        // Shuffle the verses array
         const shuffled = [...data].sort(() => Math.random() - 0.5);
         setVerses(shuffled);
         setVerseHistory([shuffled[0]]);
@@ -193,17 +134,14 @@ export default function HomeScreen() {
   const getNextVerse = () => {
     if (verses.length === 0) return;
 
-    // Get the next verse in the shuffled order
     const nextIndex = verseHistory.length;
 
-    // If we've seen all verses, reshuffle and start over
     if (nextIndex >= verses.length) {
       const reshuffled = [...verses].sort(() => Math.random() - 0.5);
       setVerses(reshuffled);
       setVerseHistory([reshuffled[0]]);
       setCurrentIndex(0);
     } else {
-      // Get next verse in order
       setVerseHistory([...verseHistory, verses[nextIndex]]);
       setCurrentIndex(currentIndex + 1);
     }
@@ -235,28 +173,37 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <ImageBackground source={backgroundImage} style={styles.container}>
+      <BackgroundWrapper style={styles.container}>
         <ActivityIndicator size="large" color={colors.accent} />
-      </ImageBackground>
+      </BackgroundWrapper>
     );
   }
 
   if (verseHistory.length === 0) {
     return (
-      <ImageBackground source={backgroundImage} style={styles.container}>
-        <Text style={styles.errorText}>
+      <BackgroundWrapper style={styles.container}>
+        <Text style={[styles.errorText, { color: colors.text }]}>
           No verses found. Add some in Supabase!
         </Text>
-      </ImageBackground>
+      </BackgroundWrapper>
     );
   }
 
   const currentVerse = verseHistory[currentIndex];
 
   return (
-    <ImageBackground source={backgroundImage} style={styles.container}>
+    <BackgroundWrapper style={styles.container}>
       <GestureDetector gesture={panGesture}>
-        <Animated.View style={[styles.card, animatedStyle]}>
+        <Animated.View
+          style={[
+            styles.card,
+            animatedStyle,
+            {
+              backgroundColor: colors.cardBackground,
+              borderColor: colors.cardBorder,
+            },
+          ]}
+        >
           <TouchableOpacity style={styles.heartIcon} onPress={handleSave}>
             <Ionicons
               name={isSaved ? "bookmark" : "bookmark-outline"}
@@ -268,10 +215,64 @@ export default function HomeScreen() {
             colors={["transparent", colors.accent, "transparent"]}
             style={styles.divider}
           />
-          <Text style={styles.verseText}>"{currentVerse.text}"</Text>
-          <Text style={styles.reference}>{currentVerse.reference}</Text>
+          <Text style={[styles.verseText, { color: colors.text }]}>
+            "{currentVerse.text}"
+          </Text>
+          <Text style={[styles.reference, { color: colors.reference }]}>
+            {currentVerse.reference}
+          </Text>
         </Animated.View>
       </GestureDetector>
-    </ImageBackground>
+    </BackgroundWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  card: {
+    borderRadius: 20,
+    padding: 40,
+    width: width - 40,
+    alignItems: "center",
+    position: "relative",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  heartIcon: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 10,
+  },
+  divider: {
+    width: 2,
+    height: 40,
+    marginBottom: 24,
+  },
+  verseText: {
+    fontSize: 24,
+    textAlign: "center",
+    fontStyle: "italic",
+    lineHeight: 32,
+    marginBottom: 24,
+    fontFamily: "Newsreader_400Regular_Italic",
+  },
+  reference: {
+    fontSize: 14,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    fontFamily: "Inter_500Medium",
+  },
+  errorText: {
+    fontSize: 16,
+  },
+});

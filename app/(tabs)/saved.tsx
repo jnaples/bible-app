@@ -5,11 +5,12 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
-  ImageBackground,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import BackgroundWrapper from "../../components/BackgroundWrapper";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
 
@@ -23,92 +24,10 @@ type SavedVerse = {
   };
 };
 
-const bgDark = require("../../assets/images/bg-dark.png");
-const bgLight = require("../../assets/images/bg-light.png");
-
 export default function SavedScreen() {
-  const { colors, theme } = useTheme();
+  const { colors } = useTheme();
   const [savedVerses, setSavedVerses] = useState<SavedVerse[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const backgroundImage = theme === "light" ? bgLight : bgDark;
-
-  const styles = {
-    container: {
-      flex: 1,
-      paddingTop: 60,
-    },
-    loadingContainer: {
-      flex: 1,
-      justifyContent: "center" as const,
-      alignItems: "center" as const,
-    },
-    header: {
-      fontSize: 28,
-      fontWeight: "bold" as const,
-      paddingHorizontal: 20,
-      marginBottom: 20,
-      color: colors.text,
-      fontFamily: "Newsreader_300Light",
-    },
-    listContainer: {
-      padding: 20,
-      paddingTop: 0,
-    },
-    verseCard: {
-      borderRadius: 15,
-      padding: 20,
-      marginBottom: 15,
-      flexDirection: "row" as const,
-      alignItems: "center" as const,
-      borderWidth: 1,
-      backgroundColor: colors.cardBackground,
-      borderColor: colors.cardBorder,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 8,
-      elevation: 6,
-    },
-    verseContent: {
-      flex: 1,
-      marginRight: 15,
-    },
-    verseText: {
-      fontSize: 20,
-      marginBottom: 8,
-      lineHeight: 28,
-      fontFamily: "Newsreader_500Medium_Italic",
-      color: colors.text,
-    },
-    reference: {
-      fontSize: 12,
-      textTransform: "uppercase" as const,
-      letterSpacing: 1,
-      fontFamily: "Inter_500Medium",
-      color: colors.reference,
-    },
-    deleteButton: {
-      padding: 8,
-    },
-    emptyContainer: {
-      flex: 1,
-      justifyContent: "center" as const,
-      alignItems: "center" as const,
-      paddingHorizontal: 40,
-    },
-    emptyText: {
-      fontSize: 20,
-      marginTop: 20,
-      marginBottom: 10,
-      color: colors.text,
-    },
-    emptySubtext: {
-      fontSize: 14,
-      textAlign: "center" as const,
-      color: colors.reference,
-    },
-  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -170,12 +89,25 @@ export default function SavedScreen() {
   };
 
   const renderVerse = ({ item }: { item: SavedVerse }) => (
-    <View style={styles.verseCard}>
+    <View
+      style={[
+        styles.verseCard,
+        {
+          backgroundColor: colors.cardBackground,
+          borderColor: colors.cardBorder,
+        },
+      ]}
+    >
       <View style={styles.verseContent}>
-        <Text style={styles.verseText} numberOfLines={2}>
+        <Text
+          style={[styles.verseText, { color: colors.text }]}
+          numberOfLines={2}
+        >
           "{item.verse.text}"
         </Text>
-        <Text style={styles.reference}>{item.verse.reference}</Text>
+        <Text style={[styles.reference, { color: colors.reference }]}>
+          {item.verse.reference}
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.deleteButton}
@@ -188,15 +120,15 @@ export default function SavedScreen() {
 
   if (loading) {
     return (
-      <ImageBackground source={backgroundImage} style={styles.loadingContainer}>
+      <BackgroundWrapper style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.accent} />
-      </ImageBackground>
+      </BackgroundWrapper>
     );
   }
 
   return (
-    <ImageBackground source={backgroundImage} style={styles.container}>
-      <Text style={styles.header}>Saved Verses</Text>
+    <BackgroundWrapper style={styles.container}>
+      <Text style={[styles.header, { color: colors.text }]}>Saved Verses</Text>
 
       {savedVerses.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -205,8 +137,10 @@ export default function SavedScreen() {
             size={64}
             color={colors.tabBarInactive}
           />
-          <Text style={styles.emptyText}>No saved verses yet</Text>
-          <Text style={styles.emptySubtext}>
+          <Text style={[styles.emptyText, { color: colors.text }]}>
+            No saved verses yet
+          </Text>
+          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
             Tap the bookmark icon on verses to save them
           </Text>
         </View>
@@ -218,6 +152,76 @@ export default function SavedScreen() {
           contentContainerStyle={styles.listContainer}
         />
       )}
-    </ImageBackground>
+    </BackgroundWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 60,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: "bold",
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    fontFamily: "Newsreader_300Light",
+  },
+  listContainer: {
+    padding: 20,
+    paddingTop: 0,
+  },
+  verseCard: {
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  verseContent: {
+    flex: 1,
+    marginRight: 15,
+  },
+  verseText: {
+    fontSize: 20,
+    marginBottom: 8,
+    lineHeight: 28,
+    fontFamily: "Newsreader_500Medium_Italic",
+  },
+  reference: {
+    fontSize: 12,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    fontFamily: "Inter_500Medium",
+  },
+  deleteButton: {
+    padding: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+  emptyText: {
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    textAlign: "center",
+  },
+});

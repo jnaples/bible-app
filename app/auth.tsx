@@ -1,6 +1,12 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  ImageBackground,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -59,7 +65,7 @@ export default function AuthScreen() {
       backgroundColor: colors.background,
     },
     title: {
-      fontSize: 36,
+      fontSize: 40,
       textAlign: "center" as const,
       marginBottom: 8,
       color: colors.text,
@@ -126,7 +132,11 @@ export default function AuthScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../assets/images/bg-dark.png")}
+      style={styles.container}
+      resizeMode="cover"
+    >
       <Text style={styles.title}>Sacred Armor</Text>
       <Text style={styles.subtitle}>
         Put on the full armor of God to Protect Your Mind and Soul
@@ -201,6 +211,6 @@ export default function AuthScreen() {
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ImageBackground>
   );
 }

@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import BackgroundWrapper from "../../components/BackgroundWrapper";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
@@ -8,69 +9,6 @@ export default function AccountScreen() {
   const { signOut, deleteAccount, session } = useAuth();
   const { colors } = useTheme();
   const router = useRouter();
-
-  const styles = {
-    container: {
-      flex: 1,
-      paddingTop: 60,
-      paddingHorizontal: 20,
-      backgroundColor: colors.background,
-    },
-    header: {
-      fontSize: 28,
-      fontWeight: "bold" as const,
-      marginBottom: 30,
-      fontFamily: "Newsreader_300Light",
-      color: colors.text,
-    },
-    section: {
-      borderRadius: 15,
-      padding: 20,
-      marginBottom: 20,
-      borderWidth: 1,
-      backgroundColor: colors.cardBackground,
-      borderColor: colors.cardBorder,
-    },
-    sectionTitle: {
-      fontSize: 14,
-      marginBottom: 8,
-      textTransform: "uppercase" as const,
-      letterSpacing: 1,
-      fontFamily: "Inter_400Regular",
-      color: colors.reference,
-    },
-    email: {
-      fontSize: 16,
-      fontFamily: "Inter_400Regular",
-      color: colors.text,
-    },
-    signOutButton: {
-      backgroundColor: colors.accent,
-      padding: 18,
-      borderRadius: 15,
-      alignItems: "center" as const,
-      marginBottom: 15,
-    },
-    signOutText: {
-      color: colors.background,
-      fontSize: 16,
-      fontWeight: "600" as const,
-      fontFamily: "Inter_600SemiBold",
-    },
-    deleteButton: {
-      backgroundColor: "transparent",
-      padding: 18,
-      borderRadius: 15,
-      alignItems: "center" as const,
-      borderWidth: 1,
-      borderColor: "#e74c3c",
-    },
-    deleteButtonText: {
-      color: "#e74c3c",
-      fontSize: 16,
-      fontFamily: "Inter_600SemiBold",
-    },
-  };
 
   const handleSignOut = async () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
@@ -109,16 +47,33 @@ export default function AccountScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Account</Text>
+    <BackgroundWrapper style={styles.container}>
+      <Text style={[styles.header, { color: colors.text }]}>Settings</Text>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account</Text>
-        <Text style={styles.email}>{session?.user?.email}</Text>
+      <View
+        style={[
+          styles.section,
+          {
+            backgroundColor: colors.cardBackground,
+            borderColor: colors.cardBorder,
+          },
+        ]}
+      >
+        <Text style={[styles.sectionTitle, { color: colors.reference }]}>
+          Account
+        </Text>
+        <Text style={[styles.email, { color: colors.text }]}>
+          {session?.user?.email}
+        </Text>
       </View>
 
-      <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-        <Text style={styles.signOutText}>Sign Out</Text>
+      <TouchableOpacity
+        style={[styles.signOutButton, { backgroundColor: colors.accent }]}
+        onPress={handleSignOut}
+      >
+        <Text style={[styles.signOutText, { color: colors.background }]}>
+          Sign Out
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -127,6 +82,61 @@ export default function AccountScreen() {
       >
         <Text style={styles.deleteButtonText}>Delete Account</Text>
       </TouchableOpacity>
-    </View>
+    </BackgroundWrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 60,
+    paddingHorizontal: 20,
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 30,
+    fontFamily: "Newsreader_300Light",
+  },
+  section: {
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    fontFamily: "Inter_400Regular",
+  },
+  email: {
+    fontSize: 16,
+    fontFamily: "Inter_400Regular",
+  },
+  signOutButton: {
+    padding: 18,
+    borderRadius: 15,
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  signOutText: {
+    fontSize: 16,
+    fontWeight: "600",
+    fontFamily: "Inter_600SemiBold",
+  },
+  deleteButton: {
+    backgroundColor: "transparent",
+    padding: 18,
+    borderRadius: 15,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#e74c3c",
+  },
+  deleteButtonText: {
+    color: "#e74c3c",
+    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
+  },
+});
