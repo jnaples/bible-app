@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
-  StyleSheet,
+  ImageBackground,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -28,8 +27,11 @@ type Verse = {
   text: string;
 };
 
+const bgDark = require("../../assets/images/bg-dark.png");
+const bgLight = require("../../assets/images/bg-light.png");
+
 export default function HomeScreen() {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const [verses, setVerses] = useState<Verse[]>([]);
   const [verseHistory, setVerseHistory] = useState<Verse[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,6 +39,62 @@ export default function HomeScreen() {
   const [isSaved, setIsSaved] = useState(false);
 
   const translateX = useSharedValue(0);
+  const backgroundImage = theme === "light" ? bgLight : bgDark;
+
+  const styles = {
+    container: {
+      flex: 1,
+      justifyContent: "center" as const,
+      alignItems: "center" as const,
+      padding: 20,
+    },
+    card: {
+      borderRadius: 20,
+      padding: 40,
+      width: width - 40,
+      alignItems: "center" as const,
+      position: "relative" as const,
+      borderWidth: 1,
+      backgroundColor: colors.cardBackground,
+      borderColor: colors.cardBorder,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.4,
+      shadowRadius: 12,
+      elevation: 8,
+    },
+    heartIcon: {
+      position: "absolute" as const,
+      top: 20,
+      right: 20,
+      zIndex: 10,
+    },
+    divider: {
+      width: 2,
+      height: 40,
+      marginBottom: 24,
+    },
+    verseText: {
+      fontSize: 24,
+      textAlign: "center" as const,
+      fontStyle: "italic" as const,
+      lineHeight: 32,
+      marginBottom: 24,
+      fontFamily: "Newsreader_400Regular_Italic",
+      color: colors.text,
+    },
+    reference: {
+      fontSize: 14,
+      textTransform: "uppercase" as const,
+      letterSpacing: 1,
+      fontFamily: "Inter_500Medium",
+      color: colors.reference,
+    },
+    errorText: {
+      fontSize: 16,
+      color: colors.text,
+    },
+  };
 
   useEffect(() => {
     fetchAllVerses();
@@ -52,9 +110,7 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       const { data, error } = await supabase.from("verses").select("*");
-
       if (error) throw error;
-
       if (data && data.length > 0) {
         setVerses(data);
         const randomVerse = data[Math.floor(Math.random() * data.length)];
@@ -71,21 +127,18 @@ export default function HomeScreen() {
     try {
       const currentVerse = verseHistory[currentIndex];
       if (!currentVerse) return;
-
       const {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-
       const { data } = await supabase
         .from("saved_verses")
         .select("id")
         .eq("user_id", user.id)
         .eq("verse_id", currentVerse.id)
         .single();
-
       setIsSaved(!!data);
-    } catch (error) {
+    } catch {
       setIsSaved(false);
     }
   };
@@ -104,7 +157,6 @@ export default function HomeScreen() {
           .delete()
           .eq("user_id", user.id)
           .eq("verse_id", currentVerse.id);
-
         setIsSaved(false);
         Toast.show({
           type: "success",
@@ -116,7 +168,6 @@ export default function HomeScreen() {
         await supabase
           .from("saved_verses")
           .insert({ user_id: user.id, verse_id: currentVerse.id });
-
         setIsSaved(true);
         Toast.show({
           type: "success",
@@ -139,14 +190,12 @@ export default function HomeScreen() {
   const getNextVerse = () => {
     if (verses.length === 0) return;
     const randomVerse = verses[Math.floor(Math.random() * verses.length)];
-    setVerseHistory([...verseHistory, randomVerse]);
-    setCurrentIndex(currentIndex + 1);
+    setVerseHistory((prev) => [...prev, randomVerse]);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   const getPreviousVerse = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
+    if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
   };
 
   const panGesture = Gesture.Pan()
@@ -171,37 +220,28 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <ImageBackground source={backgroundImage} style={styles.container}>
         <ActivityIndicator size="large" color={colors.accent} />
-      </View>
+      </ImageBackground>
     );
   }
 
   if (verseHistory.length === 0) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Text style={[styles.errorText, { color: colors.text }]}>
+      <ImageBackground source={backgroundImage} style={styles.container}>
+        <Text style={styles.errorText}>
           No verses found. Add some in Supabase!
         </Text>
-      </View>
+      </ImageBackground>
     );
   }
 
   const currentVerse = verseHistory[currentIndex];
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <ImageBackground source={backgroundImage} style={styles.container}>
       <GestureDetector gesture={panGesture}>
-        <Animated.View
-          style={[
-            styles.card,
-            animatedStyle,
-            {
-              backgroundColor: colors.cardBackground,
-              borderColor: colors.cardBorder,
-            },
-          ]}
-        >
+        <Animated.View style={[styles.card, animatedStyle]}>
           <TouchableOpacity style={styles.heartIcon} onPress={handleSave}>
             <Ionicons
               name={isSaved ? "bookmark" : "bookmark-outline"}
@@ -209,69 +249,14 @@ export default function HomeScreen() {
               color={colors.accent}
             />
           </TouchableOpacity>
-
           <LinearGradient
             colors={["transparent", colors.accent, "transparent"]}
             style={styles.divider}
           />
-          <Text style={[styles.verseText, { color: colors.text }]}>
-            "{currentVerse.text}"
-          </Text>
-          <Text style={[styles.reference, { color: colors.reference }]}>
-            {currentVerse.reference}
-          </Text>
+          <Text style={styles.verseText}>"{currentVerse.text}"</Text>
+          <Text style={styles.reference}>{currentVerse.reference}</Text>
         </Animated.View>
       </GestureDetector>
-    </View>
+    </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  card: {
-    borderRadius: 20,
-    padding: 40,
-    width: width - 40,
-    alignItems: "center",
-    position: "relative",
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  heartIcon: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-    zIndex: 10,
-  },
-  divider: {
-    width: 2,
-    height: 40,
-    marginBottom: 24,
-  },
-  verseText: {
-    fontSize: 24,
-    textAlign: "center",
-    fontStyle: "italic",
-    lineHeight: 32,
-    marginBottom: 24,
-    fontFamily: "Newsreader_400Regular_Italic",
-  },
-  reference: {
-    fontSize: 14,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    fontFamily: "Inter_500Medium",
-  },
-  errorText: {
-    fontSize: 16,
-  },
-});
