@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  ImageBackground,
   Text,
   TouchableOpacity,
   View,
@@ -22,22 +23,25 @@ type SavedVerse = {
   };
 };
 
+const bgDark = require("../../assets/images/bg-dark.png");
+const bgLight = require("../../assets/images/bg-light.png");
+
 export default function SavedScreen() {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
   const [savedVerses, setSavedVerses] = useState<SavedVerse[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const backgroundImage = theme === "light" ? bgLight : bgDark;
 
   const styles = {
     container: {
       flex: 1,
       paddingTop: 60,
-      backgroundColor: colors.background,
     },
     loadingContainer: {
       flex: 1,
       justifyContent: "center" as const,
       alignItems: "center" as const,
-      backgroundColor: colors.background,
     },
     header: {
       fontSize: 28,
@@ -60,6 +64,11 @@ export default function SavedScreen() {
       borderWidth: 1,
       backgroundColor: colors.cardBackground,
       borderColor: colors.cardBorder,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 6,
     },
     verseContent: {
       flex: 1,
@@ -122,7 +131,12 @@ export default function SavedScreen() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setSavedVerses(data || []);
+      setSavedVerses(
+        (data || []).map((item) => ({
+          ...item,
+          verse: Array.isArray(item.verse) ? item.verse[0] : item.verse,
+        })),
+      );
     } catch (error) {
       console.error("Error fetching saved verses:", error);
     } finally {
@@ -174,14 +188,14 @@ export default function SavedScreen() {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <ImageBackground source={backgroundImage} style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.accent} />
-      </View>
+      </ImageBackground>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={backgroundImage} style={styles.container}>
       <Text style={styles.header}>Saved Verses</Text>
 
       {savedVerses.length === 0 ? (
@@ -204,6 +218,6 @@ export default function SavedScreen() {
           contentContainerStyle={styles.listContainer}
         />
       )}
-    </View>
+    </ImageBackground>
   );
 }

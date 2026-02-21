@@ -42,7 +42,7 @@ export default function TabLayout() {
           marginTop: 4,
           fontSize: 12,
         },
-        tabBarButton: (props) => (
+        tabBarButton: (props: any) => (
           <TouchableOpacity
             {...props}
             style={[
