@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   verseCard: {
     borderRadius: 15,
     padding: 20,
-    marginBottom: 15,
+    marginBottom: 24,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
