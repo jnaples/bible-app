@@ -1,6 +1,13 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -46,6 +53,10 @@ export default function AccountScreen() {
     );
   };
 
+  const handlePrivacyPolicy = () => {
+    Linking.openURL("https://www.sacredarmor.app/privacy-policy");
+  };
+
   return (
     <BackgroundWrapper style={styles.container}>
       <Text style={[styles.header, { color: colors.text }]}>Settings</Text>
@@ -82,6 +93,14 @@ export default function AccountScreen() {
       >
         <Text style={styles.deleteButtonText}>Delete Account</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.privacyButton, { borderColor: colors.cardBorder }]}
+        onPress={handlePrivacyPolicy}
+      >
+        <Text style={[styles.privacyButtonText, { color: colors.reference }]}>
+          Privacy Policy
+        </Text>
+      </TouchableOpacity>
     </BackgroundWrapper>
   );
 }
@@ -93,7 +112,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   header: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
     marginBottom: 30,
     fontFamily: "Newsreader_300Light",
@@ -136,6 +155,13 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: "#e74c3c",
+    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
+  },
+  privacyButton: {
+    marginTop: 16,
+  },
+  privacyButtonText: {
     fontSize: 16,
     fontFamily: "Inter_600SemiBold",
   },
