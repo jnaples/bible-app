@@ -99,10 +99,7 @@ export default function SavedScreen() {
       ]}
     >
       <View style={styles.verseContent}>
-        <Text
-          style={[styles.verseText, { color: colors.text }]}
-          numberOfLines={2}
-        >
+        <Text style={[styles.verseText, { color: colors.text }]}>
           "{item.verse.text}"
         </Text>
         <Text style={[styles.reference, { color: colors.reference }]}>
@@ -167,7 +164,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
     paddingHorizontal: 20,
     marginBottom: 20,
