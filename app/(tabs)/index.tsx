@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -38,6 +39,14 @@ export default function HomeScreen() {
       checkIfSaved();
     }
   }, [currentIndex, verseHistory]);
+
+  useFocusEffect(
+  React.useCallback(() => {
+    if (verseHistory.length > 0) {
+      checkIfSaved();
+    }
+  }, [currentIndex, verseHistory])
+);
 
   const fetchAllVerses = async () => {
     try {
