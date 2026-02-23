@@ -7,10 +7,10 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
+import SavedVerseCard from "../../components/SavedVerseCard";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
 
@@ -89,30 +89,7 @@ export default function SavedScreen() {
   };
 
   const renderVerse = ({ item }: { item: SavedVerse }) => (
-    <View
-      style={[
-        styles.verseCard,
-        {
-          backgroundColor: colors.cardBackground,
-          borderColor: colors.cardBorder,
-        },
-      ]}
-    >
-      <View style={styles.verseContent}>
-        <Text style={[styles.verseText, { color: colors.text }]}>
-          "{item.verse.text}"
-        </Text>
-        <Text style={[styles.reference, { color: colors.reference }]}>
-          {item.verse.reference}
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDelete(item.id)}
-      >
-        <Ionicons name="trash-outline" size={24} color="#e74c3c" />
-      </TouchableOpacity>
-    </View>
+    <SavedVerseCard verse={item.verse} onDelete={() => handleDelete(item.id)} />
   );
 
   if (loading) {
@@ -173,38 +150,6 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 20,
     paddingTop: 0,
-  },
-  verseCard: {
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 24,
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  verseContent: {
-    flex: 1,
-    marginRight: 15,
-  },
-  verseText: {
-    fontSize: 20,
-    marginBottom: 8,
-    lineHeight: 28,
-    fontFamily: "Newsreader_500Medium_Italic",
-  },
-  reference: {
-    fontSize: 12,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    fontFamily: "Inter_500Medium",
-  },
-  deleteButton: {
-    padding: 8,
   },
   emptyContainer: {
     flex: 1,

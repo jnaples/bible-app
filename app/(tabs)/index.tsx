@@ -1,15 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
+import {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -17,10 +9,9 @@ import Animated, {
 } from "react-native-reanimated";
 import Toast from "react-native-toast-message";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
+import VerseCard from "../../components/VerseCard";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
-
-const { width } = Dimensions.get("window");
 
 type Verse = {
   id: string;
@@ -71,16 +62,19 @@ export default function HomeScreen() {
     try {
       const currentVerse = verseHistory[currentIndex];
       if (!currentVerse) return;
+
       const {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
+
       const { data } = await supabase
         .from("saved_verses")
         .select("id")
         .eq("user_id", user.id)
         .eq("verse_id", currentVerse.id)
         .single();
+
       setIsSaved(!!data);
     } catch {
       setIsSaved(false);
@@ -101,23 +95,25 @@ export default function HomeScreen() {
           .delete()
           .eq("user_id", user.id)
           .eq("verse_id", currentVerse.id);
+
         setIsSaved(false);
         Toast.show({
           type: "success",
           text1: "Verse removed from saved",
           position: "top",
-          topOffset: 60,
+          topOffset: 64,
         });
       } else {
         await supabase
           .from("saved_verses")
           .insert({ user_id: user.id, verse_id: currentVerse.id });
+
         setIsSaved(true);
         Toast.show({
           type: "success",
           text1: "Verse saved to collection",
           position: "top",
-          topOffset: 60,
+          topOffset: 64,
         });
       }
     } catch (error: any) {
@@ -126,7 +122,7 @@ export default function HomeScreen() {
         text1: "Error",
         text2: error.message,
         position: "top",
-        topOffset: 60,
+        topOffset: 64,
       });
     }
   };
@@ -194,34 +190,12 @@ export default function HomeScreen() {
   return (
     <BackgroundWrapper style={styles.container}>
       <GestureDetector gesture={panGesture}>
-        <Animated.View
-          style={[
-            styles.card,
-            animatedStyle,
-            {
-              backgroundColor: colors.cardBackground,
-              borderColor: colors.cardBorder,
-            },
-          ]}
-        >
-          <TouchableOpacity style={styles.heartIcon} onPress={handleSave}>
-            <Ionicons
-              name={isSaved ? "bookmark" : "bookmark-outline"}
-              size={28}
-              color={colors.accent}
-            />
-          </TouchableOpacity>
-          <LinearGradient
-            colors={["transparent", colors.accent, "transparent"]}
-            style={styles.divider}
-          />
-          <Text style={[styles.verseText, { color: colors.text }]}>
-            "{currentVerse.text}"
-          </Text>
-          <Text style={[styles.reference, { color: colors.reference }]}>
-            {currentVerse.reference}
-          </Text>
-        </Animated.View>
+        <VerseCard
+          verse={currentVerse}
+          isSaved={isSaved}
+          onSave={handleSave}
+          animatedStyle={animatedStyle}
+        />
       </GestureDetector>
     </BackgroundWrapper>
   );
@@ -232,47 +206,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-  },
-  card: {
-    borderRadius: 20,
-    padding: 40,
-    width: width - 40,
-    alignItems: "center",
-    position: "relative",
-    borderWidth: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  heartIcon: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-    zIndex: 10,
-  },
-  divider: {
-    width: 2,
-    height: 40,
-    marginBottom: 24,
-  },
-  verseText: {
-    fontSize: 24,
-    textAlign: "center",
-    fontStyle: "italic",
-    lineHeight: 32,
-    marginBottom: 24,
-    fontFamily: "Newsreader_400Regular_Italic",
-  },
-  reference: {
-    fontSize: 14,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    fontFamily: "Inter_500Medium",
+    padding: 16, // 8pt × 2
   },
   errorText: {
-    fontSize: 16,
+    fontSize: 16, // 8pt × 2
   },
 });
