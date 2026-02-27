@@ -127,7 +127,8 @@ export default function AuthScreen() {
       textAlign: "center" as const,
       color: colors.accent,
       fontSize: 14,
-      fontFamily: "Inter_400Regular",
+      fontWeight: "500" as const,
+      fontFamily: "Inter_500Medium",
     },
   };
 
