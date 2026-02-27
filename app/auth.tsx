@@ -125,7 +125,7 @@ export default function AuthScreen() {
     },
     toggleText: {
       textAlign: "center" as const,
-      color: colors.tabBarInactive,
+      color: colors.accent,
       fontSize: 14,
       fontFamily: "Inter_400Regular",
     },
