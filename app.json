@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "bible-app",
+    "name": "Sacred Armor",
     "slug": "bible-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,9 +9,14 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sacredarmor.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.sacredarmor.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -47,7 +52,12 @@
     },
     "extra": {
       "supabaseUrl": "",
-      "supabaseAnonKey": ""
-    }
+      "supabaseAnonKey": "",
+      "router": {},
+      "eas": {
+        "projectId": "a9b3e9e3-d303-4edc-8915-317a655b6c57"
+      }
+    },
+    "owner": "breakthrough001"
   }
 }
