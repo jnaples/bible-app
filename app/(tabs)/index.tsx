@@ -41,12 +41,12 @@ export default function HomeScreen() {
   }, [currentIndex, verseHistory]);
 
   useFocusEffect(
-  React.useCallback(() => {
-    if (verseHistory.length > 0) {
-      checkIfSaved();
-    }
-  }, [currentIndex, verseHistory])
-);
+    React.useCallback(() => {
+      if (verseHistory.length > 0) {
+        checkIfSaved();
+      }
+    }, [currentIndex, verseHistory]),
+  );
 
   const fetchAllVerses = async () => {
     try {

@@ -1,57 +1,83 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../contexts/ThemeContext";
 
+const bgDark = require("../assets/images/paper-dark.png");
+const bgLight = require("../assets/images/paper-light.png");
+
 export function useToastConfig() {
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
+  const backgroundImage = theme === "light" ? bgLight : bgDark;
 
   return {
     success: ({ text1 }: { text1?: string }) => (
-      <View
-        style={[
-          styles.toast,
-          {
-            backgroundColor: colors.cardBackground,
-            borderColor: colors.cardBorder,
-          },
-        ]}
-      >
-        <Text style={[styles.text, { color: colors.text }]}>{text1}</Text>
+      <View style={styles.toastContainer}>
+        <View
+          style={[
+            styles.toast,
+            {
+              backgroundColor: colors.cardBackground,
+              borderColor: colors.cardBorder,
+            },
+          ]}
+        >
+          <ImageBackground
+            source={backgroundImage}
+            style={styles.toastBackground}
+            resizeMode="cover"
+          >
+            <Text style={[styles.text, { color: colors.text }]}>{text1}</Text>
+          </ImageBackground>
+        </View>
       </View>
     ),
     error: ({ text1, text2 }: { text1?: string; text2?: string }) => (
-      <View
-        style={[
-          styles.toast,
-          {
-            backgroundColor: colors.cardBackground,
-            borderColor: colors.cardBorder,
-          },
-        ]}
-      >
-        <Text style={[styles.text, { color: "#e74c3c" }]}>{text1}</Text>
-        {text2 && (
-          <Text style={[styles.subtext, { color: colors.reference }]}>
-            {text2}
-          </Text>
-        )}
+      <View style={styles.toastContainer}>
+        <View
+          style={[
+            styles.toast,
+            {
+              backgroundColor: colors.cardBackground,
+              borderColor: colors.cardBorder,
+            },
+          ]}
+        >
+          <ImageBackground
+            source={backgroundImage}
+            style={styles.toastBackground}
+            resizeMode="cover"
+          >
+            <Text style={[styles.text, { color: "#e74c3c" }]}>{text1}</Text>
+            {text2 && (
+              <Text style={[styles.subtext, { color: colors.reference }]}>
+                {text2}
+              </Text>
+            )}
+          </ImageBackground>
+        </View>
       </View>
     ),
   };
 }
 
 const styles = StyleSheet.create({
+  toastContainer: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
   toast: {
     width: "90%",
-    padding: 15,
     borderRadius: 12,
     borderWidth: 1,
+    overflow: "hidden",
+  },
+  toastBackground: {
+    width: "100%",
+    padding: 16,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
   },
   text: {
     fontSize: 14,
