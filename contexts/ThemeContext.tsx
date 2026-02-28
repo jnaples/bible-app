@@ -42,7 +42,7 @@ const darkColors = {
   divider: "#D4A574",
   tabBarBackground: "#0E1419",
   tabBarActive: "#DE9D36",
-  tabBarInactive: "#666",
+  tabBarInactive: "#717070",
   accent: "#DE9D36",
 };
 

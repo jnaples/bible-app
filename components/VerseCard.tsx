@@ -1,11 +1,21 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Animated from "react-native-reanimated";
 import { useTheme } from "../contexts/ThemeContext";
 
 const { width } = Dimensions.get("window");
+
+const bgDark = require("../assets/images/paper-dark.png");
+const bgLight = require("../assets/images/paper-light.png");
 
 type VerseCardProps = {
   verse: {
@@ -23,56 +33,73 @@ export default function VerseCard({
   onSave,
   animatedStyle,
 }: VerseCardProps) {
-  const { colors } = useTheme();
+  const { theme, colors } = useTheme();
+  const backgroundImage = theme === "light" ? bgLight : bgDark;
 
   return (
-    <Animated.View
-      style={[
-        styles.card,
-        animatedStyle,
-        {
-          backgroundColor: colors.cardBackground,
-          borderColor: colors.cardBorder,
-        },
-      ]}
-    >
-      <TouchableOpacity style={styles.bookmarkIcon} onPress={onSave}>
-        <Ionicons
-          name={isSaved ? "bookmark" : "bookmark-outline"}
-          size={28}
-          color={colors.accent}
-        />
-      </TouchableOpacity>
+    <Animated.View style={[styles.card, animatedStyle]}>
+      <View
+        style={[
+          styles.cardInner,
+          {
+            backgroundColor: colors.cardBackground,
+            borderColor: colors.cardBorder,
+          },
+        ]}
+      >
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.cardBackground}
+          resizeMode="cover"
+        >
+          <View style={styles.cardContent}>
+            <TouchableOpacity style={styles.bookmarkIcon} onPress={onSave}>
+              <Ionicons
+                name={isSaved ? "bookmark" : "bookmark-outline"}
+                size={28}
+                color={colors.accent}
+              />
+            </TouchableOpacity>
 
-      <LinearGradient
-        colors={["transparent", colors.accent, "transparent"]}
-        style={styles.divider}
-      />
+            <LinearGradient
+              colors={["transparent", colors.accent, "transparent"]}
+              style={styles.divider}
+            />
 
-      <Text style={[styles.verseText, { color: colors.text }]}>
-        "{verse.text}"
-      </Text>
+            <Text style={[styles.verseText, { color: colors.text }]}>
+              "{verse.text}"
+            </Text>
 
-      <Text style={[styles.reference, { color: colors.reference }]}>
-        {verse.reference}
-      </Text>
+            <Text style={[styles.reference, { color: colors.reference }]}>
+              {verse.reference}
+            </Text>
+          </View>
+        </ImageBackground>
+      </View>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
-    padding: 40,
     width: width - 40,
-    alignItems: "center",
-    position: "relative",
-    borderWidth: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 12,
     elevation: 8,
+  },
+  cardInner: {
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  cardBackground: {
+    width: "100%",
+  },
+  cardContent: {
+    padding: 40,
+    alignItems: "center",
   },
   bookmarkIcon: {
     position: "absolute",

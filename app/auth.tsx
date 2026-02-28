@@ -119,7 +119,7 @@ export default function AuthScreen() {
       marginTop: -5,
     },
     forgotPasswordText: {
-      color: colors.accent,
+      color: colors.divider,
       fontSize: 14,
       fontFamily: "Inter_400Regular",
     },
@@ -127,8 +127,8 @@ export default function AuthScreen() {
       textAlign: "center" as const,
       color: colors.accent,
       fontSize: 14,
-      fontWeight: "500" as const,
-      fontFamily: "Inter_500Medium",
+      fontWeight: "700" as const,
+      fontFamily: "Inter_700Bold",
     },
   };
 
