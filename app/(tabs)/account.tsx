@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
   },
   signOutText: {
     fontSize: 16,
-    fontWeight: "600",
     fontFamily: "Inter_600SemiBold",
   },
   deleteButton: {

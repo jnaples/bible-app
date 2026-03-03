@@ -9,6 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
 import SavedVerseCard from "../../components/SavedVerseCard";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -83,6 +84,12 @@ export default function SavedScreen() {
 
       if (error) throw error;
       setSavedVerses(savedVerses.filter((v) => v.id !== savedVerseId));
+      Toast.show({
+        type: "success",
+        text1: "Verse deleted",
+        position: "top",
+        topOffset: 64,
+      });
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }

@@ -63,10 +63,12 @@ export function useToastConfig() {
 const styles = StyleSheet.create({
   toastContainer: {
     shadowColor: "#000",
+    backgroundColor: "#000",
+    borderRadius: 12,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 4,
+    elevation: 8,
   },
   toast: {
     width: "90%",

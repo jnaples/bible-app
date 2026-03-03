@@ -84,10 +84,12 @@ const styles = StyleSheet.create({
   card: {
     width: width - 40,
     shadowColor: "#000",
+    backgroundColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 12,
     elevation: 8,
+    borderRadius: 16,
   },
   cardInner: {
     borderRadius: 16,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   verseText: {
     fontSize: 24,
     textAlign: "center",
-    fontStyle: "italic",
+
     lineHeight: 32,
     marginBottom: 24,
     fontFamily: "Newsreader_400Regular_Italic",
