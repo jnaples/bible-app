@@ -106,6 +106,6 @@ const styles = StyleSheet.create({
   toggleText: {
     textAlign: "center",
     marginTop: 20,
-    color: "#666",
+    color: "#656464",
   },
 });

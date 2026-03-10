@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -11,6 +12,7 @@ import {
 import Toast from "react-native-toast-message";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
 import VerseCard from "../../components/VerseCard";
+import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
 
@@ -27,6 +29,8 @@ export default function HomeScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
+  const { isGuest } = useAuth();
+  const router = useRouter();
 
   const translateX = useSharedValue(0);
 
@@ -91,6 +95,11 @@ export default function HomeScreen() {
   };
 
   const handleSave = async () => {
+    if (isGuest) {
+      router.replace("/auth");
+      return;
+    }
+
     try {
       const currentVerse = verseHistory[currentIndex];
       const {

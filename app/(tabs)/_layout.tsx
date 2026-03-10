@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
 export default function TabLayout() {
-  const { session, loading } = useAuth();
+  const { session, loading, isGuest } = useAuth();
   const { theme, colors, toggleTheme } = useTheme();
   const segments = useSegments();
   const router = useRouter();
@@ -15,13 +15,14 @@ export default function TabLayout() {
     if (loading) return;
 
     const inAuthGroup = segments[0] === "auth";
+    const hasAccess = session || isGuest;
 
-    if (!session && !inAuthGroup) {
+    if (!hasAccess && !inAuthGroup) {
       router.replace("/auth");
-    } else if (session && inAuthGroup) {
+    } else if (hasAccess && inAuthGroup) {
       router.replace("/(tabs)");
     }
-  }, [session, loading, segments]);
+  }, [session, isGuest, loading, segments]);
 
   if (loading) {
     return null;

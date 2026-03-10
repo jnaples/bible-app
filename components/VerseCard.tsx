@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
 
     lineHeight: 32,
     marginBottom: 24,
-    fontFamily: "Newsreader_400Regular_Italic",
+    fontFamily: "Newsreader_400Regular",
+    letterSpacing: -1,
   },
   reference: {
     fontSize: 14,

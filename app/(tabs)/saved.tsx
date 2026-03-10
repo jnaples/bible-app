@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -7,11 +8,13 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import BackgroundWrapper from "../../components/BackgroundWrapper";
 import SavedVerseCard from "../../components/SavedVerseCard";
+import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { supabase } from "../../lib/supabase";
 
@@ -29,6 +32,8 @@ export default function SavedScreen() {
   const { colors } = useTheme();
   const [savedVerses, setSavedVerses] = useState<SavedVerse[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isGuest } = useAuth();
+  const router = useRouter();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -103,6 +108,48 @@ export default function SavedScreen() {
     return (
       <BackgroundWrapper style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={colors.accent} />
+      </BackgroundWrapper>
+    );
+  }
+
+  if (isGuest) {
+    return (
+      <BackgroundWrapper style={styles.container}>
+        <Text style={[styles.header, { color: colors.text }]}>
+          Saved Verses
+        </Text>
+        <View style={styles.emptyContainer}>
+          <Ionicons
+            name="bookmark-outline"
+            size={64}
+            color={colors.tabBarInactive}
+          />
+          <Text style={[styles.emptyText, { color: colors.text }]}>
+            Sign in to save verses
+          </Text>
+          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
+            Create an account to build your collection
+          </Text>
+          <TouchableOpacity
+            onPress={() => router.replace("/auth")}
+            style={{
+              marginTop: 24,
+              padding: 14,
+              backgroundColor: colors.accent,
+              borderRadius: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: colors.background,
+                fontFamily: "Inter_600SemiBold",
+                fontSize: 16,
+              }}
+            >
+              Sign In / Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
       </BackgroundWrapper>
     );
   }

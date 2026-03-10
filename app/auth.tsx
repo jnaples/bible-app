@@ -8,16 +8,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
-import { useTheme } from "../contexts/ThemeContext";
 
 export default function AuthScreen() {
-  const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, continueAsGuest } = useAuth();
   const router = useRouter();
+
+  const darkColors = {
+    background: "#191F2F",
+    cardBackground: "#1D2230",
+    cardBorder: "#443A37",
+    text: "#E8E6E3",
+    reference: "#DE9D36",
+    divider: "#D4A574",
+    tabBarBackground: "#0E1419",
+    tabBarActive: "#DE9D36",
+    tabBarInactive: "#717070",
+    accent: "#DE9D36",
+  };
+  const colors = darkColors;
 
   const handleAuth = async () => {
     if (!email) {
@@ -151,7 +163,7 @@ export default function AuthScreen() {
           <TextInput
             style={styles.input}
             placeholder="Email"
-            placeholderTextColor="#666"
+            placeholderTextColor="#656464"
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -173,7 +185,7 @@ export default function AuthScreen() {
           <TextInput
             style={styles.input}
             placeholder="Email"
-            placeholderTextColor="#666"
+            placeholderTextColor="#656464"
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -182,7 +194,7 @@ export default function AuthScreen() {
           <TextInput
             style={styles.input}
             placeholder="Password"
-            placeholderTextColor="#666"
+            placeholderTextColor="#656464"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -208,6 +220,24 @@ export default function AuthScreen() {
               {isSignUp
                 ? "Already have an account? Sign In"
                 : "Don't have an account? Sign Up"}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              continueAsGuest();
+              router.replace("/(tabs)");
+            }}
+            style={{ alignItems: "center", marginTop: 24 }}
+          >
+            <Text
+              style={{
+                color: colors.reference,
+                fontSize: 14,
+                fontFamily: "Inter_400Regular",
+              }}
+            >
+              Continue as Guest
             </Text>
           </TouchableOpacity>
         </>

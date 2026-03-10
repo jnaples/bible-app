@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -13,7 +14,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
 export default function AccountScreen() {
-  const { signOut, deleteAccount, session } = useAuth();
+  const { signOut, deleteAccount, session, isGuest } = useAuth();
   const { colors } = useTheme();
   const router = useRouter();
 
@@ -56,6 +57,46 @@ export default function AccountScreen() {
   const handlePrivacyPolicy = () => {
     Linking.openURL("https://www.sacredarmor.app/privacy-policy");
   };
+
+  if (isGuest) {
+    return (
+      <BackgroundWrapper style={styles.container}>
+        <Text style={[styles.header, { color: colors.text }]}>Account</Text>
+        <View style={styles.emptyContainer}>
+          <Ionicons
+            name="person-outline"
+            size={64}
+            color={colors.tabBarInactive}
+          />
+          <Text style={[styles.emptyText, { color: colors.text }]}>
+            Create an account
+          </Text>
+          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
+            Sign up to save verses and access your account
+          </Text>
+          <TouchableOpacity
+            onPress={() => router.replace("/auth")}
+            style={{
+              marginTop: 24,
+              padding: 14,
+              backgroundColor: colors.accent,
+              borderRadius: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: colors.background,
+                fontFamily: "Inter_600SemiBold",
+                fontSize: 16,
+              }}
+            >
+              Sign In / Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </BackgroundWrapper>
+    );
+  }
 
   return (
     <BackgroundWrapper style={styles.container}>
@@ -163,5 +204,20 @@ const styles = StyleSheet.create({
   privacyButtonText: {
     fontSize: 16,
     fontFamily: "Inter_600SemiBold",
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+  emptyText: {
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    textAlign: "center",
   },
 });
