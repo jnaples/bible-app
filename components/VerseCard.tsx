@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     marginBottom: 24,
     fontFamily: "Newsreader_400Regular",
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   reference: {
     fontSize: 14,

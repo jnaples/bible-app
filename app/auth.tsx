@@ -104,7 +104,7 @@ export default function AuthScreen() {
       backgroundColor: colors.cardBackground,
       padding: 15,
       borderRadius: 12,
-      marginBottom: 15,
+      marginBottom: 24,
       fontSize: 16,
       color: colors.text,
       borderWidth: 1,

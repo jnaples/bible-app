@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 8,
     lineHeight: 28,
-    fontFamily: "Newsreader_400Regular_Italic",
+    fontFamily: "Newsreader_400Regular",
+    letterSpacing: -0.5,
   },
   reference: {
     fontSize: 12,

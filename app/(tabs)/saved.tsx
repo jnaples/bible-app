@@ -127,7 +127,7 @@ export default function SavedScreen() {
           <Text style={[styles.emptyText, { color: colors.text }]}>
             Sign in to save verses
           </Text>
-          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
+          <Text style={[styles.emptySubtext, { color: colors.text }]}>
             Create an account to build your collection
           </Text>
           <TouchableOpacity
@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontWeight: "bold",
     paddingHorizontal: 20,
     marginBottom: 20,
     fontFamily: "Newsreader_300Light",
@@ -212,12 +211,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   emptyText: {
-    fontSize: 20,
+    fontSize: 32,
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 12,
+    fontFamily: "Newsreader_400Regular",
   },
   emptySubtext: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center",
+    fontFamily: "Inter_500Medium",
+    lineHeight: 22,
   },
 });

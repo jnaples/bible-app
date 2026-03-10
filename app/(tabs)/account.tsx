@@ -71,7 +71,7 @@ export default function AccountScreen() {
           <Text style={[styles.emptyText, { color: colors.text }]}>
             Create an account
           </Text>
-          <Text style={[styles.emptySubtext, { color: colors.reference }]}>
+          <Text style={[styles.emptySubtext, { color: colors.text }]}>
             Sign up to save verses and access your account
           </Text>
           <TouchableOpacity
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontWeight: "bold",
     marginBottom: 30,
     fontFamily: "Newsreader_300Light",
   },
@@ -212,12 +211,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   emptyText: {
-    fontSize: 20,
+    fontSize: 32,
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 12,
+    fontFamily: "Newsreader_400Regular",
   },
   emptySubtext: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center",
+    fontFamily: "Inter_500Medium",
+    lineHeight: 22,
   },
 });
