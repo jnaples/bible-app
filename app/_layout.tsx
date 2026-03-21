@@ -21,6 +21,9 @@ import Toast from "react-native-toast-message";
 import { useToastConfig } from "../components/ToastConfig";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { Settings } from 'react-native-fbsdk-next';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -51,6 +54,17 @@ export default function RootLayout() {
     Inter_600SemiBold,
     Inter_700Bold,
   });
+
+  useEffect(() => {
+  const initFacebook = async () => {
+    const { status } = await requestTrackingPermissionsAsync();
+    Settings.initializeSDK();
+    if (status === 'granted') {
+      await Settings.setAdvertiserTrackingEnabled(true);
+    }
+  };
+  initFacebook();
+}, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {

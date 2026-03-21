@@ -44,7 +44,21 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "923375997329091",
+          "clientToken": "b61c9566b28489373cea5e1bf5bcf031",
+          "displayName": "Sacred Armor",
+          "scheme": "fb923375997329091",
+          "advertiserIDCollectionEnabled": true,
+          "autoLogAppEventsEnabled": true,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
+      "expo-tracking-transparency"
     ],
     "experiments": {
       "typedRoutes": true,

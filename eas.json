@@ -6,7 +6,11 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://gisykfghsimwsydfabbh.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_zbbAAHd-6obbBzBd9aSF2g_jQ95zsku"
+      }
     },
     "preview": {
       "distribution": "internal",
