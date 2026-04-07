@@ -25,7 +25,7 @@ export default function SavedVerseCard({
           <Text style={[styles.verseText, { color: colors.text }]}>
             {verse.text}
           </Text>
-          <Text style={[styles.reference, { color: colors.reference }]}>
+          <Text style={[styles.reference, { color: colors.text }]}>
             — {verse.reference}
           </Text>
         </View>
@@ -54,15 +54,15 @@ const styles = StyleSheet.create({
   },
   verseText: {
     fontSize: 20,
-    marginBottom: 8,
-    lineHeight: 28,
-    fontFamily: "Newsreader_400Regular",
+    marginBottom: 12,
+    lineHeight: 22,
+    fontFamily: "EBGaramond_500Medium",
     letterSpacing: -0.5,
   },
   reference: {
-    fontSize: 14,
+    fontSize: 12,
     textTransform: "uppercase",
-    letterSpacing: 14 * 0.08,
+    letterSpacing: 2,
     fontFamily: "EBGaramond_600SemiBold_Italic",
   },
   deleteButton: {

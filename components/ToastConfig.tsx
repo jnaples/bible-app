@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontFamily: "Inter_500Medium",
+    fontFamily: "EBGaramond_500Medium",
   },
   subtext: {
     fontSize: 12,
     marginTop: 4,
-    fontFamily: "Inter_400Regular",
+    fontFamily: "EBGaramond_500Medium",
   },
 });

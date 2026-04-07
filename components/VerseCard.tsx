@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -50,6 +45,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     marginBottom: 24,
     fontFamily: "EBGaramond_500Medium",
+    letterSpacing: -0.5,
   },
   reference: {
     fontSize: 18,
