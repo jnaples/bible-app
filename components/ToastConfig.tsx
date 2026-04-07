@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../contexts/ThemeContext";
 
 const bgDark = require("../assets/images/paper-dark.png");
-const bgLight = require("../assets/images/paper-light.png");
+const bgLight = require("../assets/images/paper-bg.webp");
 
 export function useToastConfig() {
   const { colors, theme } = useTheme();

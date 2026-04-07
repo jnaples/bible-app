@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     paddingHorizontal: 20,
     marginBottom: 20,
-    fontFamily: "Newsreader_300Light",
+    fontFamily: "Newsreader_400Regular",
   },
   listContainer: {
     padding: 20,

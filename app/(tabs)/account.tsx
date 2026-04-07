@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     marginBottom: 30,
-    fontFamily: "Newsreader_300Light",
+    fontFamily: "Newsreader_400Regular",
   },
   section: {
     borderRadius: 15,

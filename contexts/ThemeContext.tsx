@@ -23,8 +23,8 @@ type ThemeContextType = {
 const lightColors = {
   background: "#E8E3D6",
   cardBackground: "#F5F1E8",
-  cardBorder: "#F6F0E9",
-  text: "#1a1a1a",
+  cardBorder: "#B0A695",
+  text: "#200C03",
   reference: "#668059",
   divider: "#D4A574",
   tabBarBackground: "#E8E3D6",
@@ -49,7 +49,7 @@ const darkColors = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     loadTheme();

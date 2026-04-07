@@ -1,3 +1,4 @@
+import { EBGaramond_500Medium, EBGaramond_600SemiBold_Italic } from "@expo-google-fonts/eb-garamond";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -21,8 +22,8 @@ import Toast from "react-native-toast-message";
 import { useToastConfig } from "../components/ToastConfig";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
-import { Settings } from 'react-native-fbsdk-next';
-import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+// import { Settings } from 'react-native-fbsdk-next';
+// import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -43,6 +44,8 @@ function AppContent() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
+    EBGaramond_500Medium,
+    EBGaramond_600SemiBold_Italic,
     Newsreader_300Light,
     Newsreader_400Regular,
     Newsreader_400Regular_Italic,
@@ -56,14 +59,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-  const initFacebook = async () => {
-    const { status } = await requestTrackingPermissionsAsync();
-    Settings.initializeSDK();
-    if (status === 'granted') {
-      await Settings.setAdvertiserTrackingEnabled(true);
-    }
-  };
-  initFacebook();
+  // const initFacebook = async () => {
+  //   const { status } = await requestTrackingPermissionsAsync();
+  //   Settings.initializeSDK();
+  //   if (status === 'granted') {
+  //     await Settings.setAdvertiserTrackingEnabled(true);
+  //   }
+  // };
+  // initFacebook();
 }, []);
 
   useEffect(() => {

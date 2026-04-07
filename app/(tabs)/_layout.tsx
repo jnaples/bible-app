@@ -41,7 +41,8 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.tabBarInactive,
         tabBarLabelStyle: {
           marginTop: 4,
-          fontSize: 12,
+          fontSize: 14,
+          fontFamily: "EBGaramond_500Medium",
         },
         tabBarButton: (props: any) => (
           <TouchableOpacity

@@ -1,7 +1,8 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import {
   runOnJS,
@@ -207,11 +208,16 @@ export default function HomeScreen() {
 
   return (
     <BackgroundWrapper style={styles.container}>
+      <TouchableOpacity style={styles.bookmarkIcon} onPress={handleSave}>
+        <Ionicons
+          name={isSaved ? "bookmark" : "bookmark-outline"}
+          size={28}
+          color={colors.accent}
+        />
+      </TouchableOpacity>
       <GestureDetector gesture={panGesture}>
         <VerseCard
           verse={currentVerse}
-          isSaved={isSaved}
-          onSave={handleSave}
           animatedStyle={animatedStyle}
         />
       </GestureDetector>
@@ -224,9 +230,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 16, // 8pt × 2
+    padding: 24,
+  },
+  bookmarkIcon: {
+    position: "absolute",
+    top: 64,
+    right: 24,
+    zIndex: 10,
   },
   errorText: {
-    fontSize: 16, // 8pt × 2
+    fontSize: 16,
   },
 });

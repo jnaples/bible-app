@@ -8,7 +8,7 @@ type BackgroundWrapperProps = {
 };
 
 const bgDark = require("../assets/images/bg-dark.png");
-const bgLight = require("../assets/images/bg-light.png");
+const bgLight = require("../assets/images/paper-bg.webp");
 
 export default function BackgroundWrapper({
   children,
