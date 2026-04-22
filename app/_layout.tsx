@@ -1,18 +1,11 @@
-import { EBGaramond_500Medium, EBGaramond_600SemiBold_Italic } from "@expo-google-fonts/eb-garamond";
+import { AveriaSerifLibre_300Light } from "@expo-google-fonts/averia-serif-libre";
+import { EBGaramond_600SemiBold_Italic } from "@expo-google-fonts/eb-garamond";
 import {
   Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
-import {
-  Newsreader_300Light,
-  Newsreader_400Regular,
-  Newsreader_400Regular_Italic,
-  Newsreader_500Medium,
-  Newsreader_500Medium_Italic,
-  Newsreader_600SemiBold
-} from "@expo-google-fonts/newsreader";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -44,14 +37,8 @@ function AppContent() {
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    EBGaramond_500Medium,
+    AveriaSerifLibre_300Light,
     EBGaramond_600SemiBold_Italic,
-    Newsreader_300Light,
-    Newsreader_400Regular,
-    Newsreader_400Regular_Italic,
-    Newsreader_500Medium,
-    Newsreader_500Medium_Italic,
-    Newsreader_600SemiBold,
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,

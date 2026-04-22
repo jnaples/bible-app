@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontFamily: "EBGaramond_500Medium",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   subtext: {
     fontSize: 12,
     marginTop: 4,
-    fontFamily: "EBGaramond_500Medium",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
 });

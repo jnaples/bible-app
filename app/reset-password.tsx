@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
     color: "#E8E6E3",
-    fontFamily: "Newsreader_600SemiBold",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   subtitle: {
     fontSize: 14,

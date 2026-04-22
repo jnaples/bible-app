@@ -1,5 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -7,20 +8,29 @@ const { width, height } = Dimensions.get("window");
 
 type VerseCardProps = {
   verse: {
-    text: string;
+    verse: string;
     reference: string;
   };
+  isSaved: boolean;
+  onSave: () => void;
   animatedStyle: any;
 };
 
-export default function VerseCard({ verse, animatedStyle }: VerseCardProps) {
+export default function VerseCard({ verse, isSaved, onSave, animatedStyle }: VerseCardProps) {
   const { colors } = useTheme();
 
   return (
     <Animated.View style={[styles.card, animatedStyle]}>
+      <TouchableOpacity style={styles.bookmarkIcon} onPress={onSave}>
+        <Ionicons
+          name={isSaved ? "bookmark" : "bookmark-outline"}
+          size={24}
+          color={colors.accent}
+        />
+      </TouchableOpacity>
       <View style={styles.textContainer}>
         <Text style={[styles.verseText, { color: colors.text }]}>
-          {verse.text}
+          {verse.verse}
         </Text>
         <Text style={[styles.reference, { color: colors.text }]}>
           — {verse.reference}
@@ -37,6 +47,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  bookmarkIcon: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    padding: 10,
+    zIndex: 10,
+  },
   textContainer: {
     width: "100%",
   },
@@ -44,7 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     lineHeight: 32,
     marginBottom: 24,
-    fontFamily: "EBGaramond_500Medium",
+    fontFamily: "AveriaSerifLibre_300Light",
     letterSpacing: -0.5,
   },
   reference: {

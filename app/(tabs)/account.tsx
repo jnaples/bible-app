@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     marginBottom: 30,
-    fontFamily: "Newsreader_400Regular",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   section: {
     borderRadius: 15,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginTop: 20,
     marginBottom: 12,
-    fontFamily: "Newsreader_400Regular",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   emptySubtext: {
     fontSize: 16,

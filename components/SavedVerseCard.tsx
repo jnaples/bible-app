@@ -7,7 +7,7 @@ type SavedVerseCardProps = {
   verse: {
     id: string;
     reference: string;
-    text: string;
+    verse: string;
   };
   onDelete: () => void;
 };
@@ -23,7 +23,7 @@ export default function SavedVerseCard({
       <View style={styles.cardContent}>
         <View style={styles.verseContent}>
           <Text style={[styles.verseText, { color: colors.text }]}>
-            {verse.text}
+            {verse.verse}
           </Text>
           <Text style={[styles.reference, { color: colors.text }]}>
             — {verse.reference}
@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
   verseText: {
     fontSize: 20,
     marginBottom: 12,
-    lineHeight: 22,
-    fontFamily: "EBGaramond_500Medium",
+    lineHeight: 26,
+    fontFamily: "AveriaSerifLibre_300Light",
     letterSpacing: -0.5,
   },
   reference: {
-    fontSize: 12,
+    fontSize: 14,
     textTransform: "uppercase",
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     fontFamily: "EBGaramond_600SemiBold_Italic",
   },
   deleteButton: {

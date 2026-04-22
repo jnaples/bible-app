@@ -81,7 +81,7 @@ export default function AuthScreen() {
       textAlign: "center" as const,
       marginBottom: 8,
       color: colors.text,
-      fontFamily: "Newsreader_300Light",
+      fontFamily: "AveriaSerifLibre_300Light",
     },
     subtitle: {
       fontSize: 14,

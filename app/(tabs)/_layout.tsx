@@ -42,7 +42,7 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           marginTop: 4,
           fontSize: 14,
-          fontFamily: "EBGaramond_500Medium",
+          fontFamily: "AveriaSerifLibre_300Light",
         },
         tabBarButton: (props: any) => (
           <TouchableOpacity

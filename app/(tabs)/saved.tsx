@@ -24,7 +24,7 @@ type SavedVerse = {
   verse: {
     id: string;
     reference: string;
-    text: string;
+    verse: string;
   };
 };
 
@@ -51,7 +51,7 @@ export default function SavedScreen() {
 
       const { data, error } = await supabase
         .from("saved_verses")
-        .select(`id, verse_id, verse:verses(id, reference, text)`)
+        .select(`id, verse_id, verse:verses(id, reference, verse)`)
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     paddingHorizontal: 20,
     marginBottom: 20,
-    fontFamily: "Newsreader_400Regular",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   listContainer: {
     padding: 20,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginTop: 20,
     marginBottom: 12,
-    fontFamily: "Newsreader_400Regular",
+    fontFamily: "AveriaSerifLibre_300Light",
   },
   emptySubtext: {
     fontSize: 16,
