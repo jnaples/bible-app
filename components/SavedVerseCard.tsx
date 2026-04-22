@@ -25,7 +25,7 @@ export default function SavedVerseCard({
           <Text style={[styles.verseText, { color: colors.text }]}>
             {verse.verse}
           </Text>
-          <Text style={[styles.reference, { color: colors.text }]}>
+          <Text style={[styles.reference, { color: colors.reference }]}>
             — {verse.reference}
           </Text>
         </View>

@@ -1,6 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Animated from "react-native-reanimated";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -16,7 +22,12 @@ type VerseCardProps = {
   animatedStyle: any;
 };
 
-export default function VerseCard({ verse, isSaved, onSave, animatedStyle }: VerseCardProps) {
+export default function VerseCard({
+  verse,
+  isSaved,
+  onSave,
+  animatedStyle,
+}: VerseCardProps) {
   const { colors } = useTheme();
 
   return (
@@ -32,7 +43,7 @@ export default function VerseCard({ verse, isSaved, onSave, animatedStyle }: Ver
         <Text style={[styles.verseText, { color: colors.text }]}>
           {verse.verse}
         </Text>
-        <Text style={[styles.reference, { color: colors.text }]}>
+        <Text style={[styles.reference, { color: colors.reference }]}>
           — {verse.reference}
         </Text>
       </View>

@@ -249,26 +249,28 @@ export default function HomeScreen() {
 
   const header = (
     <View style={styles.header}>
-      <TouchableOpacity
-        onPress={() => setViewMode("swipe")}
-        style={[styles.toggleBtn, viewMode === "swipe" && { borderColor: colors.reference }]}
-      >
-        <Ionicons
-          name="phone-portrait-outline"
-          size={24}
-          color={viewMode === "swipe" ? colors.reference : colors.tabBarInactive}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => setViewMode("list")}
-        style={[styles.toggleBtn, viewMode === "list" && { borderColor: colors.reference }]}
-      >
-        <Ionicons
-          name="list-outline"
-          size={24}
-          color={viewMode === "list" ? colors.reference : colors.tabBarInactive}
-        />
-      </TouchableOpacity>
+      <View style={[styles.toggleGroup, { backgroundColor: colors.tabBarBackground }]}>
+        <TouchableOpacity
+          onPress={() => setViewMode("swipe")}
+          style={[styles.toggleBtn, viewMode === "swipe" && { backgroundColor: colors.cardBackground }]}
+        >
+          <Ionicons
+            name="phone-portrait-outline"
+            size={20}
+            color={viewMode === "swipe" ? colors.reference : colors.tabBarInactive}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setViewMode("list")}
+          style={[styles.toggleBtn, viewMode === "list" && { backgroundColor: colors.cardBackground }]}
+        >
+          <Ionicons
+            name="list-outline"
+            size={20}
+            color={viewMode === "list" ? colors.reference : colors.tabBarInactive}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -352,11 +354,14 @@ const styles = StyleSheet.create({
     gap: 8,
     zIndex: 10,
   },
+  toggleGroup: {
+    flexDirection: "row",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
   toggleBtn: {
     padding: 10,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "transparent",
   },
   listContainer: {
     padding: 20,
